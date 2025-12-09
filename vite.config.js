@@ -6,5 +6,5 @@ export default defineConfig({
   plugins: [react()],
   // KUJDES: Ndrysho 'EMRI-REPOZITORIT' me emrin e saktë të repo-s tënde në GitHub
   // Për shembull: base: '/matematika-noar/'
-  base: '/EMRI-REPOZITORIT/',
+  base: '/math_kuiz/',
 })
