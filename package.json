@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://USERNAME.github.io/EMRI-REPOZITORIT",
+  "homepage": "https://gentlimani.github.io/math_kuiz/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
