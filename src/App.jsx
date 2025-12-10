@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { RefreshCw, Eraser, Pen, CheckCircle, XCircle, Trophy, ChevronRight, ChevronLeft, Calculator, SkipForward, User, Undo2 } from 'lucide-react';
 
-// --- DATA: Question Database (40 Questions) ---
+// --- DATA: Question Database ---
 const QUESTIONS = [
-  // --- 1. KRIJIMI I PROBLEMAVE NGA EKUACIONET (Kërkesa e re) ---
+  // --- 1. KRIJIMI I PROBLEMAVE NGA EKUACIONET ---
   {
     id: 1,
     type: 'word',
@@ -51,7 +51,7 @@ const QUESTIONS = [
     explanation: "Kur themi 'më pak se', zbresim nga numri bazë (100)."
   },
 
-  // --- 2. KATRORËT MAGJIKË (ME SHUMË MUNGESA) ---
+  // --- 2. KATRORËT MAGJIKË ---
   {
     id: 5,
     type: 'svg',
@@ -86,8 +86,8 @@ const QUESTIONS = [
   {
     id: 6,
     type: 'svg',
-    question: "Katror Magjik (Shuma 12): Cilat numra mungojnë te 'X' dhe 'Y'?",
-    hint: "Kujdes! Rreshti i parë: X + Y + 2 = 12. Kolona e fundit: 2 + 9 + ? = 12. Gjej numrat me radhë.",
+    question: "Katror Magjik (Shuma 15): Cilat numra mungojnë te 'X' dhe 'Y'?",
+    hint: "Kolona e dytë: 1 + 5 + ? = 15. Kolona e tretë: 6 + 7 + ? = 15.",
     svg: (
       <svg viewBox="0 0 150 150" className="w-48 h-48 mx-auto">
         <rect x="0" y="0" width="150" height="150" fill="white" stroke="black" strokeWidth="2" />
@@ -97,22 +97,22 @@ const QUESTIONS = [
         <line x1="0" y1="100" x2="150" y2="100" stroke="black" />
         
         {/* Row 1 */}
-        <text x="25" y="35" textAnchor="middle" fontSize="20" fill="red" fontWeight="bold">X</text>
-        <text x="75" y="35" textAnchor="middle" fontSize="20" fill="blue" fontWeight="bold">Y</text>
-        <text x="125" y="35" textAnchor="middle" fontSize="20">2</text>
+        <text x="25" y="35" textAnchor="middle" fontSize="20">8</text>
+        <text x="75" y="35" textAnchor="middle" fontSize="20">1</text>
+        <text x="125" y="35" textAnchor="middle" fontSize="20">6</text>
         {/* Row 2 */}
-        <text x="25" y="85" textAnchor="middle" fontSize="20">5</text>
-        <text x="75" y="85" textAnchor="middle" fontSize="20">4</text>
-        <text x="125" y="85" textAnchor="middle" fontSize="20">9</text>
+        <text x="25" y="85" textAnchor="middle" fontSize="20">3</text>
+        <text x="75" y="85" textAnchor="middle" fontSize="20">5</text>
+        <text x="125" y="85" textAnchor="middle" fontSize="20">7</text>
         {/* Row 3 */}
-        <text x="25" y="135" textAnchor="middle" fontSize="20">?</text>
-        <text x="75" y="135" textAnchor="middle" fontSize="20">?</text>
-        <text x="125" y="135" textAnchor="middle" fontSize="20">1</text>
+        <text x="25" y="135" textAnchor="middle" fontSize="20">4</text>
+        <text x="75" y="135" textAnchor="middle" fontSize="20" fill="red" fontWeight="bold">X</text>
+        <text x="125" y="135" textAnchor="middle" fontSize="20" fill="blue" fontWeight="bold">Y</text>
       </svg>
     ),
-    options: ["X=7, Y=3", "X=6, Y=4", "X=5, Y=5", "X=8, Y=2"],
-    correctAnswer: "X=7, Y=3",
-    explanation: "Kolona e fundit: 2+9+1=12. Rreshti i mesit: 5+?+9. Në fakt: 7+3+2=12. X=7, Y=3."
+    options: ["X=9, Y=2", "X=6, Y=4", "X=8, Y=2", "X=7, Y=3"],
+    correctAnswer: "X=9, Y=2",
+    explanation: "Kolona e dytë: 1+5=6, duhet 9 (15-6=9). Kolona e tretë: 6+7=13, duhet 2 (15-13=2)."
   },
 
   // --- 3. MBLEDHJE E ZBRITJE ME KALIM TË RENDIT ---
@@ -439,53 +439,25 @@ const QUESTIONS = [
 
 // --- COMPONENTS ---
 
-// 1. Drawing Canvas Component
+// 1. Drawing Canvas Component (Updated for precision)
 const DrawingCanvas = ({ questionId }) => { 
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [color, setColor] = useState('black'); // 'black' or 'white' (eraser)
+  const [color, setColor] = useState('black'); 
   
-  // Auto-clear when questionId changes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
-      // Save context state before clearing
+      // Clear canvas when question changes
       ctx.save();
-      // Reset transform just in case
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // Restore context state
       ctx.restore();
     }
   }, [questionId]);
 
-  // Set up canvas context and event listeners
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const context = canvas.getContext('2d');
-    context.lineCap = 'round';
-    context.lineJoin = 'round';
-    
-    // Prevent scrolling when touching canvas
-    const preventScroll = (e) => {
-      if (e.target === canvas) {
-        e.preventDefault();
-      }
-    };
-    
-    document.body.addEventListener('touchstart', preventScroll, { passive: false });
-    document.body.addEventListener('touchmove', preventScroll, { passive: false });
-
-    return () => {
-      document.body.removeEventListener('touchstart', preventScroll);
-      document.body.removeEventListener('touchmove', preventScroll);
-    };
-  }, []);
-
-  // Handle resizing
+  // Canvas setup for high DPI
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -493,41 +465,53 @@ const DrawingCanvas = ({ questionId }) => {
     const resizeCanvas = () => {
       const parent = canvas.parentElement;
       if (parent) {
-        // Save existing drawing
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        const tempCtx = tempCanvas.getContext('2d');
-        tempCtx.drawImage(canvas, 0, 0);
-
-        // Resize
-        canvas.width = parent.clientWidth;
-        canvas.height = parent.clientHeight;
+        // High DPI scaling
+        const dpr = window.devicePixelRatio || 1;
+        const rect = parent.getBoundingClientRect();
         
-        // Restore drawing
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+        
         const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        ctx.drawImage(tempCanvas, 0, 0);
       }
     };
 
     window.addEventListener('resize', resizeCanvas);
-    resizeCanvas(); // Initial size
+    resizeCanvas(); // Initial call
 
     return () => window.removeEventListener('resize', resizeCanvas);
   }, []);
+
+  const getCoordinates = (e, canvas) => {
+    const rect = canvas.getBoundingClientRect();
+    let clientX, clientY;
+    
+    if (e.touches && e.touches.length > 0) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    return {
+      offsetX: clientX - rect.left,
+      offsetY: clientY - rect.top
+    };
+  };
 
   const startDrawing = (e) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const { offsetX, offsetY } = getCoordinates(e, canvas);
     
-    // IMPORTANT: Set styles immediately before drawing to ensure current state is used
     ctx.lineWidth = color === 'white' ? 20 : 3;
     ctx.strokeStyle = color;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
     
     ctx.beginPath();
     ctx.moveTo(offsetX, offsetY);
@@ -540,10 +524,6 @@ const DrawingCanvas = ({ questionId }) => {
     const ctx = canvas.getContext('2d');
     const { offsetX, offsetY } = getCoordinates(e, canvas);
     
-    // Ensure styles are set here too for continuity
-    ctx.lineWidth = color === 'white' ? 20 : 3;
-    ctx.strokeStyle = color;
-    
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
   };
@@ -553,22 +533,6 @@ const DrawingCanvas = ({ questionId }) => {
     const ctx = canvas.getContext('2d');
     ctx.closePath();
     setIsDrawing(false);
-  };
-
-  const getCoordinates = (e, canvas) => {
-    // Handle both mouse and touch events
-    if (e.touches && e.touches.length > 0) {
-      const rect = canvas.getBoundingClientRect();
-      return {
-        offsetX: e.touches[0].clientX - rect.left,
-        offsetY: e.touches[0].clientY - rect.top
-      };
-    } else {
-      return {
-        offsetX: e.nativeEvent.offsetX,
-        offsetY: e.nativeEvent.offsetY
-      };
-    }
   };
 
   const clearCanvas = () => {
@@ -609,7 +573,6 @@ const DrawingCanvas = ({ questionId }) => {
         </div>
       </div>
       <div className="flex-grow relative touch-none bg-white cursor-crosshair">
-        {/* Grid background for math feel */}
         <div className="absolute inset-0 pointer-events-none opacity-20" 
              style={{ backgroundImage: 'linear-gradient(#4f46e5 1px, transparent 1px), linear-gradient(90deg, #4f46e5 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
         </div>
@@ -733,7 +696,6 @@ export default function MathQuizApp() {
 
   const prevQuestion = () => {
     if (currentQuestionIndex > 0) {
-      // Undo logic: Remove last history record and decrement score if it was correct
       const newHistory = [...history];
       const lastAction = newHistory.pop();
       
