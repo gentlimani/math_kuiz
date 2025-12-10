@@ -3,10 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Matematika me Noarin</title>
-    <!-- Tailwind CSS CDN for quick styling without complex setup -->
+    <!-- Tailwind CSS CDN for guaranteed styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Prevents unwanted scrolling on iPads/Tablets while drawing */
+      body {
+        overscroll-behavior-y: none;
+        touch-action: pan-x pan-y;
+      }
+      canvas {
+        touch-action: none;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
