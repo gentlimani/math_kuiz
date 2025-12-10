@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // KUJDES: Ndrysho 'EMRI-REPOZITORIT' me emrin e saktë të repo-s tënde në GitHub
-  // Për shembull: base: '/matematika-noar/'
+  // IMPORTANT: Replace 'math_kuiz' with your exact repository name if it is different
   base: '/math_kuiz/',
 })
