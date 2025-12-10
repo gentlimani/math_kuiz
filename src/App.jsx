@@ -1,28 +1,52 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { RefreshCw, Eraser, Pen, CheckCircle, XCircle, Trophy, ChevronRight, ChevronLeft, Calculator, SkipForward, User, Undo2 } from 'lucide-react';
 
-// --- DATA: Question Database ---
+// --- DATA: Baza e Pyetjeve (40 Pyetje) ---
 const QUESTIONS = [
-  // --- 1. KRIJIMI I PROBLEMAVE NGA EKUACIONET ---
+  // --- 1. EKUACIONE TË AVANCUARA ---
   {
     id: 1,
-    type: 'word',
-    question: "Cila problemë i përshtatet ekuacionit: 24 + 15 = ?",
-    hint: "Kërko një histori ku dy grupe bashkohen (shtohen).",
-    options: [
-      "Joni kishte 24 lapsa dhe i dha 15 motrës. Sa i mbetën?",
-      "Joni kishte 24 lapsa dhe bleu edhe 15 të tjerë. Sa ka tani?",
-      "Joni kishte 24 lapsa dhe i ndau në 15 grupe.",
-      "Joni kishte 24 lapsa dhe humbi 15."
-    ],
-    correctAnswer: "Joni kishte 24 lapsa dhe bleu edhe 15 të tjerë. Sa ka tani?",
-    explanation: "Shenja '+' tregon shtim ose bashkim. 'Bleu edhe' tregon mbledhje."
+    type: 'text',
+    question: "Llogarit: (24 - 3) : (2 + 5) = ?",
+    hint: "Kryej veprimet brenda kllapave: (21) : (7).",
+    options: ["3", "7", "4", "2"],
+    correctAnswer: "3",
+    explanation: "24 - 3 = 21 dhe 2 + 5 = 7. Pastaj 21 : 7 = 3."
   },
   {
     id: 2,
+    type: 'text',
+    question: "Gjej rezultatin: 24 + (224 - 43) = ?",
+    hint: "Fillimisht zbritja brenda kllapave: 224 - 43.",
+    options: ["181", "205", "200", "195"],
+    correctAnswer: "205",
+    explanation: "224 - 43 = 181. Pastaj 24 + 181 = 205."
+  },
+  {
+    id: 3,
+    type: 'text',
+    question: "Llogarit: (2 + 4) x 6 = ?",
+    hint: "Kryej fillimisht veprimin brenda kllapave.",
+    options: ["36", "12", "48", "24"],
+    correctAnswer: "36",
+    explanation: "2 + 4 = 6. Pastaj 6 x 6 = 36."
+  },
+  {
+    id: 4,
+    type: 'text',
+    question: "Sa bëjnë: 100 - (5 x 8) = ?",
+    hint: "Shumëzimi kryhet para zbritjes.",
+    options: ["60", "40", "50", "20"],
+    correctAnswer: "60",
+    explanation: "5 x 8 = 40. Pastaj 100 - 40 = 60."
+  },
+
+  // --- 2. KRIJIMI I PROBLEMAVE NGA EKUACIONET ---
+  {
+    id: 5,
     type: 'word',
     question: "Cila problemë i përshtatet ekuacionit: 50 - 20 = ?",
-    hint: "Kërko një histori ku diçka hiqet, humbet ose zvogëlohet.",
+    hint: "Kërko një histori ku diçka hiqet ose zvogëlohet.",
     options: [
       "Ana ka 50 euro. Ajo bleu një libër 20 euro. Sa i mbetën?",
       "Ana ka 50 euro dhe mori 20 euro dhuratë. Sa ka gjithsej?",
@@ -30,64 +54,29 @@ const QUESTIONS = [
       "Ana ka 50 euro, secila vlen 20 herë më shumë."
     ],
     correctAnswer: "Ana ka 50 euro. Ajo bleu një libër 20 euro. Sa i mbetën?",
-    explanation: "Shenja '-' tregon zbritje. 'Bleu' do të thotë që paratë pakësohen."
-  },
-  {
-    id: 3,
-    type: 'word',
-    question: "Zgjidh ekuacionin për këtë problemë: 'Në një klasë janë 18 vajza dhe 12 djem. Sa nxënës janë gjithsej?'",
-    hint: "'Gjithsej' tregon mbledhje.",
-    options: ["18 - 12 =", "18 x 12 =", "18 + 12 =", "18 : 12 ="],
-    correctAnswer: "18 + 12 =",
-    explanation: "Për të gjetur totalin, mbledhim numrat."
-  },
-  {
-    id: 4,
-    type: 'word',
-    question: "Cila shprehje tregon: '35 më pak se 100'?",
-    hint: "'Më pak' tregon zbritje nga numri i madh.",
-    options: ["35 - 100", "100 - 35", "100 + 35", "100 : 35"],
-    correctAnswer: "100 - 35",
-    explanation: "Kur themi 'më pak se', zbresim nga numri bazë (100)."
-  },
-
-  // --- 2. KATRORËT MAGJIKË ---
-  {
-    id: 5,
-    type: 'svg',
-    question: "Katror Magjik (Shuma 15): Cilat numra mungojnë te 'A' dhe 'B'?",
-    hint: "Rreshti i parë: 4 + ? + 2 = 15. Rreshti i dytë: 3 + 5 + ? = 15.",
-    svg: (
-      <svg viewBox="0 0 150 150" className="w-48 h-48 mx-auto">
-        <rect x="0" y="0" width="150" height="150" fill="white" stroke="black" strokeWidth="2" />
-        <line x1="50" y1="0" x2="50" y2="150" stroke="black" />
-        <line x1="100" y1="0" x2="100" y2="150" stroke="black" />
-        <line x1="0" y1="50" x2="150" y2="50" stroke="black" />
-        <line x1="0" y1="100" x2="150" y2="100" stroke="black" />
-        
-        {/* Row 1 */}
-        <text x="25" y="35" textAnchor="middle" fontSize="20">4</text>
-        <text x="75" y="35" textAnchor="middle" fontSize="20" fill="red" fontWeight="bold">A</text>
-        <text x="125" y="35" textAnchor="middle" fontSize="20">2</text>
-        {/* Row 2 */}
-        <text x="25" y="85" textAnchor="middle" fontSize="20">3</text>
-        <text x="75" y="85" textAnchor="middle" fontSize="20">5</text>
-        <text x="125" y="85" textAnchor="middle" fontSize="20" fill="blue" fontWeight="bold">B</text>
-        {/* Row 3 */}
-        <text x="25" y="135" textAnchor="middle" fontSize="20">8</text>
-        <text x="75" y="135" textAnchor="middle" fontSize="20">1</text>
-        <text x="125" y="135" textAnchor="middle" fontSize="20">6</text>
-      </svg>
-    ),
-    options: ["A=9, B=7", "A=8, B=6", "A=7, B=9", "A=5, B=5"],
-    correctAnswer: "A=9, B=7",
-    explanation: "Rreshti 1: 4+2=6, duhen 9 (15-6=9). Rreshti 2: 3+5=8, duhen 7 (15-8=7)."
+    explanation: "Shenja '-' tregon zbritje (shpenzim)."
   },
   {
     id: 6,
+    type: 'word',
+    question: "Cila problemë i përshtatet ekuacionit: 24 + 15 = ?",
+    hint: "Kërko bashkim të sasive.",
+    options: [
+      "Joni kishte 24 lapsa dhe i dha 15 motrës.",
+      "Joni kishte 24 lapsa dhe bleu edhe 15 të tjerë.",
+      "Joni kishte 24 lapsa dhe i ndau në 15 grupe.",
+      "Joni humbi 15 lapsa."
+    ],
+    correctAnswer: "Joni kishte 24 lapsa dhe bleu edhe 15 të tjerë.",
+    explanation: "+ do të thotë shtim."
+  },
+
+  // --- 3. KATRORËT MAGJIKË (TË ZGJIDHSHËM) ---
+  {
+    id: 7,
     type: 'svg',
-    question: "Katror Magjik (Shuma 15): Cilat numra mungojnë te 'X' dhe 'Y'?",
-    hint: "Kolona e dytë: 1 + 5 + ? = 15. Kolona e tretë: 6 + 7 + ? = 15.",
+    question: "Katror Magjik (Shuma 15): Gjeni X dhe Y.",
+    hint: "Përdor kolonat! Kolona e dytë: 1 + 5 + X = 15. Kolona e tretë: 6 + 7 + Y = 15.",
     svg: (
       <svg viewBox="0 0 150 150" className="w-48 h-48 mx-auto">
         <rect x="0" y="0" width="150" height="150" fill="white" stroke="black" strokeWidth="2" />
@@ -95,16 +84,12 @@ const QUESTIONS = [
         <line x1="100" y1="0" x2="100" y2="150" stroke="black" />
         <line x1="0" y1="50" x2="150" y2="50" stroke="black" />
         <line x1="0" y1="100" x2="150" y2="100" stroke="black" />
-        
-        {/* Row 1 */}
         <text x="25" y="35" textAnchor="middle" fontSize="20">8</text>
         <text x="75" y="35" textAnchor="middle" fontSize="20">1</text>
         <text x="125" y="35" textAnchor="middle" fontSize="20">6</text>
-        {/* Row 2 */}
         <text x="25" y="85" textAnchor="middle" fontSize="20">3</text>
         <text x="75" y="85" textAnchor="middle" fontSize="20">5</text>
         <text x="125" y="85" textAnchor="middle" fontSize="20">7</text>
-        {/* Row 3 */}
         <text x="25" y="135" textAnchor="middle" fontSize="20">4</text>
         <text x="75" y="135" textAnchor="middle" fontSize="20" fill="red" fontWeight="bold">X</text>
         <text x="125" y="135" textAnchor="middle" fontSize="20" fill="blue" fontWeight="bold">Y</text>
@@ -112,115 +97,77 @@ const QUESTIONS = [
     ),
     options: ["X=9, Y=2", "X=6, Y=4", "X=8, Y=2", "X=7, Y=3"],
     correctAnswer: "X=9, Y=2",
-    explanation: "Kolona e dytë: 1+5=6, duhet 9 (15-6=9). Kolona e tretë: 6+7=13, duhet 2 (15-13=2)."
-  },
-
-  // --- 3. MBLEDHJE E ZBRITJE ME KALIM TË RENDIT ---
-  {
-    id: 7,
-    type: 'text',
-    question: "Gjeni shumën: 468 + 285 = ?",
-    hint: "Kujdes, keni dy herë kalim të rendit (te njëshet dhe te dhjetëshet).",
-    options: ["753", "643", "743", "653"],
-    correctAnswer: "753",
-    explanation: "8+5=13 (shkruaj 3, mbaj 1); 6+8+1=15 (shkruaj 5, mbaj 1); 4+2+1=7. Totali 753."
+    explanation: "Kolona e mesit: 1 + 5 = 6. Mungojnë 9 (X). Kolona e fundit: 6 + 7 = 13. Mungojnë 2 (Y)."
   },
   {
     id: 8,
+    type: 'svg',
+    question: "Katror Magjik (Shuma 15): Cilat numra mungojnë te A dhe B?",
+    hint: "Rreshti i parë: 4 + A + 2 = 15. Rreshti i dytë: 3 + 5 + B = 15.",
+    svg: (
+      <svg viewBox="0 0 150 150" className="w-48 h-48 mx-auto">
+        <rect x="0" y="0" width="150" height="150" fill="white" stroke="black" strokeWidth="2" />
+        <line x1="50" y1="0" x2="50" y2="150" stroke="black" />
+        <line x1="100" y1="0" x2="100" y2="150" stroke="black" />
+        <line x1="0" y1="50" x2="150" y2="50" stroke="black" />
+        <line x1="0" y1="100" x2="150" y2="100" stroke="black" />
+        <text x="25" y="35" textAnchor="middle" fontSize="20">4</text>
+        <text x="75" y="35" textAnchor="middle" fontSize="20" fill="red" fontWeight="bold">A</text>
+        <text x="125" y="35" textAnchor="middle" fontSize="20">2</text>
+        <text x="25" y="85" textAnchor="middle" fontSize="20">3</text>
+        <text x="75" y="85" textAnchor="middle" fontSize="20">5</text>
+        <text x="125" y="85" textAnchor="middle" fontSize="20" fill="blue" fontWeight="bold">B</text>
+        <text x="25" y="135" textAnchor="middle" fontSize="20">8</text>
+        <text x="75" y="135" textAnchor="middle" fontSize="20">1</text>
+        <text x="125" y="135" textAnchor="middle" fontSize="20">6</text>
+      </svg>
+    ),
+    options: ["A=9, B=7", "A=8, B=6", "A=7, B=9", "A=5, B=5"],
+    correctAnswer: "A=9, B=7",
+    explanation: "Rreshti 1: 4+2=6, duhen 9. Rreshti 2: 3+5=8, duhen 7."
+  },
+
+  // --- 4. MBLEDHJE E ZBRITJE TË MËDHA ---
+  {
+    id: 9,
     type: 'text',
-    question: "Kryeni zbritjen me hua: 800 - 435 = ?",
-    hint: "Duhet të merrni hua nga qindëshet deri te njëshet (zinxhir).",
+    question: "Gjeni shumën: 468 + 285 = ?",
+    hint: "Mblidh me shtyllë, duke mbajtur mend.",
+    options: ["753", "643", "743", "653"],
+    correctAnswer: "753",
+    explanation: "8+5=13 (3, mbaj 1); 6+8+1=15 (5, mbaj 1); 4+2+1=7."
+  },
+  {
+    id: 10,
+    type: 'text',
+    question: "Kryeni zbritjen: 800 - 435 = ?",
+    hint: "Merr hua nga qindëshet deri te njëshet.",
     options: ["465", "365", "475", "375"],
     correctAnswer: "365",
     explanation: "10-5=5; 9-3=6; 7-4=3. Rezultati: 365."
   },
   {
-    id: 9,
+    id: 11,
     type: 'text',
     question: "Gjeni numrin që mungon: 1000 = 800 + ___ + 50 + 3",
-    hint: "Duhet të bëhet 1000. Kemi 800 + 50 + 3 = 853. Sa mungojnë deri në 1000?",
+    hint: "Duhet të bëhet 1000. Kemi 800 + 50 + 3 = 853.",
     options: ["200", "100", "147", "153"],
     correctAnswer: "147",
     explanation: "1000 - 853 = 147."
   },
   {
-    id: 10,
+    id: 12,
     type: 'text',
     question: "Gjeni ndryshimin: 900 - 27 = ?",
-    hint: "Merrni hua te 9-ta dhe kujdes me dhjetëshet.",
+    hint: "Merrni hua te 9-ta.",
     options: ["873", "883", "973", "827"],
     correctAnswer: "873",
-    explanation: "10-7=3; 9-2=7; mbetet 8. Rezultati: 873."
+    explanation: "10-7=3; 9-2=7; mbetet 8."
   },
 
-  // --- 4. TREKËNDËSHAT E NUMRAVE ---
-  {
-    id: 11,
-    type: 'svg',
-    question: "Gjeni numrin në majë. (Numri sipër është shuma e dy numrave poshtë)",
-    hint: "76 + 24 = ?",
-    svg: (
-      <svg viewBox="0 0 200 120" className="w-48 h-32 mx-auto">
-        <polygon points="100,10 40,110 160,110" fill="none" stroke="#2563eb" strokeWidth="3" />
-        <text x="100" y="50" textAnchor="middle" fontSize="24" fill="#2563eb" fontWeight="bold">?</text>
-        <text x="70" y="100" textAnchor="middle" fontSize="20" fill="black">76</text>
-        <text x="130" y="100" textAnchor="middle" fontSize="20" fill="black">24</text>
-      </svg>
-    ),
-    options: ["100", "90", "110", "120"],
-    correctAnswer: "100",
-    explanation: "76 + 24 = 100."
-  },
-  {
-    id: 12,
-    type: 'svg',
-    question: "Cili numër mungon në bazë? (Numri sipër = shuma e poshtëm)",
-    hint: "50 - 18 = ?",
-    svg: (
-      <svg viewBox="0 0 200 120" className="w-48 h-32 mx-auto">
-        <polygon points="100,10 40,110 160,110" fill="none" stroke="#dc2626" strokeWidth="3" />
-        <text x="100" y="50" textAnchor="middle" fontSize="24" fill="black" fontWeight="bold">50</text>
-        <text x="70" y="100" textAnchor="middle" fontSize="20" fill="black">18</text>
-        <text x="130" y="100" textAnchor="middle" fontSize="24" fill="#dc2626" fontWeight="bold">?</text>
-      </svg>
-    ),
-    options: ["32", "42", "22", "68"],
-    correctAnswer: "32",
-    explanation: "50 - 18 = 32."
-  },
-
-  // --- 5. PROBLEMA ME FJALË ---
+  // --- 5. SHUMËZIMI DHE PJESËTIMI ---
   {
     id: 13,
-    type: 'word',
-    question: "Në një autobus janë 45 pasagjerë. Në stacion zbritën 12 dhe hipën 8. Sa pasagjerë janë tani?",
-    hint: "Bëj veprimet me radhë: 45 - 12 + 8.",
-    options: ["33", "41", "53", "31"],
-    correctAnswer: "41",
-    explanation: "45 - 12 = 33. Pastaj 33 + 8 = 41."
-  },
-  {
-    id: 14,
-    type: 'word',
-    question: "Arta lexoi 24 faqe ditën e parë, 30 faqe ditën e dytë. Libri ka 90 faqe. Sa faqe i kanë mbetur?",
-    hint: "Gjej sa lexoi gjithsej, pastaj zbrit nga totali.",
-    options: ["54", "46", "36", "66"],
-    correctAnswer: "36",
-    explanation: "Lexoi 24 + 30 = 54. Mbetën 90 - 54 = 36 faqe."
-  },
-  {
-    id: 15,
-    type: 'word',
-    question: "Një shitës ka 80 tullumbace. 30 janë të kuqe, 20 janë të verdha, të tjerat janë blu. Sa tullumbace blu janë?",
-    hint: "80 - (30 + 20).",
-    options: ["30", "40", "50", "20"],
-    correctAnswer: "30",
-    explanation: "30 + 20 = 50. 80 - 50 = 30 blu."
-  },
-
-  // --- 6. SHUMËZIMI DHE PJESËTIMI ---
-  {
-    id: 16,
     type: 'text',
     question: "Si shkruhet shuma 4 + 4 + 4 + 4 + 4 si shumëzim?",
     hint: "Numëro sa herë përsëritet numri 4.",
@@ -229,7 +176,7 @@ const QUESTIONS = [
     explanation: "Numri 4 përsëritet 5 herë, pra 5 x 4."
   },
   {
-    id: 17,
+    id: 14,
     type: 'text',
     question: "Sa bëjnë 8 x 6?",
     hint: "Tabela e shumëzimit të 8-ës.",
@@ -238,7 +185,7 @@ const QUESTIONS = [
     explanation: "8 x 6 = 48."
   },
   {
-    id: 18,
+    id: 15,
     type: 'text',
     question: "Cili numër mungon: ___ : 4 = 9",
     hint: "Përdor shumëzimin e kundërt: 9 x 4.",
@@ -247,27 +194,18 @@ const QUESTIONS = [
     explanation: "36 : 4 = 9 sepse 9 x 4 = 36."
   },
   {
-    id: 19,
+    id: 16,
     type: 'text',
     question: "Llogarit: 324 x 2 = ?",
     hint: "Shumëzo secilën shifër me 2.",
     options: ["648", "628", "548", "644"],
     correctAnswer: "648",
-    explanation: "2x4=8, 2x2=4, 2x3=6. Rezultati 648."
+    explanation: "2x4=8, 2x2=4, 2x3=6."
   },
+  
+  // --- 6. MODELIM DHE GJEOMETRI ---
   {
-    id: 20,
-    type: 'text',
-    question: "Sa bëjnë 100 x 5?",
-    hint: "Shto dy zero numrit 5.",
-    options: ["50", "500", "5000", "105"],
-    correctAnswer: "500",
-    explanation: "5 x 100 = 500."
-  },
-
-  // --- 7. MODELIM DHE LOGJIKË ---
-  {
-    id: 21,
+    id: 17,
     type: 'text',
     question: "Cili numër vjen pas? 12, 16, 20, 24, ...",
     hint: "Numrat rriten me nga 4.",
@@ -276,78 +214,25 @@ const QUESTIONS = [
     explanation: "24 + 4 = 28."
   },
   {
-    id: 22,
-    type: 'text',
-    question: "Cili numër vjen pas? 350, 400, 450, ...",
-    hint: "Numrat rriten me nga 50.",
-    options: ["460", "500", "550", "600"],
-    correctAnswer: "500",
-    explanation: "450 + 50 = 500."
-  },
-  
-  // --- 8. GJEOMETRI ---
-  {
-    id: 23,
+    id: 18,
     type: 'text',
     question: "Sa është perimetri i një katrori me brinjë 5 cm?",
-    hint: "Perimetri = 4 x brinja (ose 5+5+5+5).",
+    hint: "Perimetri = 4 x brinja.",
     options: ["20 cm", "25 cm", "15 cm", "10 cm"],
     correctAnswer: "20 cm",
     explanation: "4 x 5 cm = 20 cm."
   },
   {
-    id: 24,
+    id: 19,
     type: 'text',
     question: "Sa brinjë ka një trekëndësh?",
-    hint: "Emri e tregon (tre).",
+    hint: "Emri e tregon.",
     options: ["3", "4", "5", "2"],
     correctAnswer: "3",
     explanation: "Trekëndëshi ka 3 brinjë."
   },
-
-  // --- 9. PYETJE SHTESË TË PËRZIERA ---
   {
-    id: 25,
-    type: 'text',
-    question: "Rrumbullakos numrin 47 në dhjetëshen më të afërt.",
-    options: ["40", "50", "45", "60"],
-    correctAnswer: "50",
-    explanation: "7 > 5, prandaj shkojmë te 50."
-  },
-  {
-    id: 26,
-    type: 'text',
-    question: "Cili numër është çift?",
-    options: ["33", "45", "88", "91"],
-    correctAnswer: "88",
-    explanation: "Numrat çift mbarojnë me 0, 2, 4, 6, 8."
-  },
-  {
-    id: 27,
-    type: 'text',
-    question: "9 x 9 = ?",
-    options: ["81", "72", "99", "18"],
-    correctAnswer: "81",
-    explanation: "9 x 9 = 81."
-  },
-  {
-    id: 28,
-    type: 'text',
-    question: "45 : 5 = ?",
-    options: ["8", "9", "7", "6"],
-    correctAnswer: "9",
-    explanation: "9 x 5 = 45."
-  },
-  {
-    id: 29,
-    type: 'text',
-    question: "Gjej ndryshimin: 1000 - 1 = ?",
-    options: ["999", "900", "1001", "990"],
-    correctAnswer: "999",
-    explanation: "Një më pak se 1000 është 999."
-  },
-  {
-    id: 30,
+    id: 20,
     type: 'text',
     question: "Sa minuta ka 1 orë e gjysmë?",
     hint: "1 orë = 60 min, gjysmë ore = 30 min.",
@@ -356,7 +241,47 @@ const QUESTIONS = [
     explanation: "60 + 30 = 90 minuta."
   },
   {
-    id: 31,
+    id: 21,
+    type: 'text',
+    question: "Rrumbullakos numrin 47 në dhjetëshen më të afërt.",
+    options: ["40", "50", "45", "60"],
+    correctAnswer: "50",
+    explanation: "7 > 5, prandaj shkojmë te 50."
+  },
+  {
+    id: 22,
+    type: 'text',
+    question: "Cili numër është çift?",
+    options: ["33", "45", "88", "91"],
+    correctAnswer: "88",
+    explanation: "Numrat çift mbarojnë me 0, 2, 4, 6, 8."
+  },
+  {
+    id: 23,
+    type: 'text',
+    question: "9 x 9 = ?",
+    options: ["81", "72", "99", "18"],
+    correctAnswer: "81",
+    explanation: "9 x 9 = 81."
+  },
+  {
+    id: 24,
+    type: 'text',
+    question: "45 : 5 = ?",
+    options: ["8", "9", "7", "6"],
+    correctAnswer: "9",
+    explanation: "9 x 5 = 45."
+  },
+  {
+    id: 25,
+    type: 'text',
+    question: "Gjej ndryshimin: 1000 - 1 = ?",
+    options: ["999", "900", "1001", "990"],
+    correctAnswer: "999",
+    explanation: "Një më pak se 1000 është 999."
+  },
+  {
+    id: 26,
     type: 'text',
     question: "Cila shenjë duhet: 356 ? 287",
     options: [">", "<", "=", "+"],
@@ -364,7 +289,7 @@ const QUESTIONS = [
     explanation: "356 është më i madh se 287."
   },
   {
-    id: 32,
+    id: 27,
     type: 'text',
     question: "Sa bëjnë 7 x 8?",
     options: ["56", "54", "49", "64"],
@@ -372,7 +297,7 @@ const QUESTIONS = [
     explanation: "7 x 8 = 56."
   },
   {
-    id: 33,
+    id: 28,
     type: 'word',
     question: "Një libër kushton 5 euro. Sa kushtojnë 6 libra?",
     options: ["30 euro", "25 euro", "35 euro", "11 euro"],
@@ -380,7 +305,7 @@ const QUESTIONS = [
     explanation: "6 x 5 = 30 euro."
   },
   {
-    id: 34,
+    id: 29,
     type: 'text',
     question: "Gjej shumën: 125 + 125 = ?",
     options: ["250", "200", "300", "225"],
@@ -388,7 +313,7 @@ const QUESTIONS = [
     explanation: "100+100=200; 25+25=50. Totali 250."
   },
   {
-    id: 35,
+    id: 30,
     type: 'text',
     question: "Cili numër vjen para 500?",
     options: ["499", "490", "501", "400"],
@@ -396,7 +321,7 @@ const QUESTIONS = [
     explanation: "500 - 1 = 499."
   },
   {
-    id: 36,
+    id: 31,
     type: 'text',
     question: "Sa bëjnë 30 : 3?",
     options: ["10", "3", "33", "90"],
@@ -404,15 +329,15 @@ const QUESTIONS = [
     explanation: "3 x 10 = 30."
   },
   {
-    id: 37,
+    id: 32,
     type: 'text',
     question: "1 kg = ? g",
-    options: ["100 g", "1000 g", "10 g", "500 g"],
+    options: ["1000 g", "100 g", "10 g", "500 g"],
     correctAnswer: "1000 g",
     explanation: "1 kilogram ka 1000 gram."
   },
   {
-    id: 38,
+    id: 33,
     type: 'text',
     question: "Cili numër është 100 më shumë se 245?",
     options: ["345", "255", "1245", "246"],
@@ -420,7 +345,7 @@ const QUESTIONS = [
     explanation: "245 + 100 = 345."
   },
   {
-    id: 39,
+    id: 34,
     type: 'text',
     question: "Sa bëjnë 0 x 9?",
     options: ["0", "9", "1", "90"],
@@ -428,28 +353,70 @@ const QUESTIONS = [
     explanation: "Çdo numër i shumëzuar me 0 jep 0."
   },
   {
-    id: 40,
+    id: 35,
     type: 'text',
     question: "Cila figurë nuk ka asnjë kënd?",
     options: ["Rrethi", "Trekëndëshi", "Katrori", "Drejtkëndëshi"],
     correctAnswer: "Rrethi",
     explanation: "Rrethi është vijë e lakuar e mbyllur, pa kënde."
+  },
+  {
+    id: 36,
+    type: 'text',
+    question: "Gjej ndryshimin: 65 - 28 = ?",
+    options: ["37", "47", "33", "43"],
+    correctAnswer: "37",
+    explanation: "15-8=7; 5-2=3. Rezultati 37."
+  },
+  {
+    id: 37,
+    type: 'text',
+    question: "Sa bëjnë 6 + 6 + 6 + 6?",
+    options: ["24", "18", "30", "12"],
+    correctAnswer: "24",
+    explanation: "4 x 6 = 24."
+  },
+  {
+    id: 38,
+    type: 'text',
+    question: "Gjej çerekun e 20.",
+    hint: "Çereku do të thotë të pjesëtosh me 4.",
+    options: ["5", "4", "10", "2"],
+    correctAnswer: "5",
+    explanation: "20 : 4 = 5."
+  },
+  {
+    id: 39,
+    type: 'text',
+    question: "Cili është numri më i madh treshifror?",
+    options: ["999", "100", "900", "99"],
+    correctAnswer: "999",
+    explanation: "Pas 999 vjen 1000 (katërshifror)."
+  },
+  {
+    id: 40,
+    type: 'word',
+    question: "Një shitës ka 80 tullumbace. 30 janë të kuqe, 20 janë të verdha, të tjerat janë blu. Sa tullumbace blu janë?",
+    hint: "80 - (30 + 20).",
+    options: ["30", "40", "50", "20"],
+    correctAnswer: "30",
+    explanation: "30 + 20 = 50. 80 - 50 = 30 blu."
   }
 ];
 
 // --- COMPONENTS ---
 
-// 1. Drawing Canvas Component (Updated for precision)
+// 1. Drawing Canvas Component (Corrected for Touch)
 const DrawingCanvas = ({ questionId }) => { 
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [color, setColor] = useState('black'); 
+  const [color, setColor] = useState('black');
   
+  // Clear canvas when question changes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
-      // Clear canvas when question changes
       ctx.save();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -457,7 +424,7 @@ const DrawingCanvas = ({ questionId }) => {
     }
   }, [questionId]);
 
-  // Canvas setup for high DPI
+  // Setup canvas for high DPI and resize
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -465,15 +432,15 @@ const DrawingCanvas = ({ questionId }) => {
     const resizeCanvas = () => {
       const parent = canvas.parentElement;
       if (parent) {
-        // High DPI scaling
         const dpr = window.devicePixelRatio || 1;
         const rect = parent.getBoundingClientRect();
         
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
+        
         canvas.style.width = `${rect.width}px`;
         canvas.style.height = `${rect.height}px`;
-        
+
         const ctx = canvas.getContext('2d');
         ctx.scale(dpr, dpr);
         ctx.lineCap = 'round';
@@ -482,15 +449,17 @@ const DrawingCanvas = ({ questionId }) => {
     };
 
     window.addEventListener('resize', resizeCanvas);
-    resizeCanvas(); // Initial call
+    resizeCanvas();
 
     return () => window.removeEventListener('resize', resizeCanvas);
   }, []);
 
-  const getCoordinates = (e, canvas) => {
+  const getCoordinates = (e) => {
+    const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
     let clientX, clientY;
     
+    // Check for touch events
     if (e.touches && e.touches.length > 0) {
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
@@ -506,9 +475,12 @@ const DrawingCanvas = ({ questionId }) => {
   };
 
   const startDrawing = (e) => {
+    // Prevent scrolling on touch devices when drawing
+    if (e.cancelable) e.preventDefault();
+    
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const { offsetX, offsetY } = getCoordinates(e, canvas);
+    const { offsetX, offsetY } = getCoordinates(e);
     
     ctx.lineWidth = color === 'white' ? 20 : 3;
     ctx.strokeStyle = color;
@@ -519,10 +491,13 @@ const DrawingCanvas = ({ questionId }) => {
   };
 
   const draw = (e) => {
+    // Prevent scrolling on touch devices when drawing
+    if (e.cancelable) e.preventDefault();
+    
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const { offsetX, offsetY } = getCoordinates(e, canvas);
+    const { offsetX, offsetY } = getCoordinates(e);
     
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
@@ -572,13 +547,14 @@ const DrawingCanvas = ({ questionId }) => {
           </button>
         </div>
       </div>
-      <div className="flex-grow relative touch-none bg-white cursor-crosshair">
+      <div className="flex-grow relative bg-white cursor-crosshair">
         <div className="absolute inset-0 pointer-events-none opacity-20" 
              style={{ backgroundImage: 'linear-gradient(#4f46e5 1px, transparent 1px), linear-gradient(90deg, #4f46e5 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
         </div>
         <canvas
           ref={canvasRef}
-          className="w-full h-full touch-none"
+          className="w-full h-full block"
+          style={{ touchAction: 'none' }}
           onMouseDown={startDrawing}
           onMouseMove={draw}
           onMouseUp={stopDrawing}
