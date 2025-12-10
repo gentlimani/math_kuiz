@@ -4,15 +4,13 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f1f5f9; /* slate-100 */
+  background-color: #f0f9ff; /* sky-50 */
 }
 
-/* Custom scrollbar for question area */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -20,9 +18,9 @@ body {
   background: #f1f1f1; 
 }
 ::-webkit-scrollbar-thumb {
-  background: #c7c7c7; 
+  background: #93c5fd; 
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8; 
+  background: #60a5fa; 
 }
