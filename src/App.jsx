@@ -1,61 +1,164 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { RefreshCw, Eraser, Pen, CheckCircle, XCircle, Trophy, ChevronRight, Calculator, SkipForward } from 'lucide-react';
+import { RefreshCw, Eraser, Pen, CheckCircle, XCircle, Trophy, ChevronRight, ChevronLeft, Calculator, SkipForward, User, Undo2 } from 'lucide-react';
 
-// --- DATA: Question Database ---
+// --- DATA: Question Database (40 Questions) ---
 const QUESTIONS = [
-  // --- MBLEDHJE E ZBRITJE (BASIC) ---
+  // --- 1. KRIJIMI I PROBLEMAVE NGA EKUACIONET (Kërkesa e re) ---
   {
     id: 1,
-    type: 'text',
-    question: "Gjeni shumën: 35 + 29 = ?",
-    hint: "Mblidhni njëshet: 5 + 9 = 14 (shkruaj 4, mbaj 1).",
-    options: ["54", "64", "65", "514"],
-    correctAnswer: "64",
-    explanation: "5 + 9 = 14 (shkruaj 4, mbaj 1). 3 + 2 + 1 = 6. Totali: 64."
+    type: 'word',
+    question: "Cila problemë i përshtatet ekuacionit: 24 + 15 = ?",
+    hint: "Kërko një histori ku dy grupe bashkohen (shtohen).",
+    options: [
+      "Joni kishte 24 lapsa dhe i dha 15 motrës. Sa i mbetën?",
+      "Joni kishte 24 lapsa dhe bleu edhe 15 të tjerë. Sa ka tani?",
+      "Joni kishte 24 lapsa dhe i ndau në 15 grupe.",
+      "Joni kishte 24 lapsa dhe humbi 15."
+    ],
+    correctAnswer: "Joni kishte 24 lapsa dhe bleu edhe 15 të tjerë. Sa ka tani?",
+    explanation: "Shenja '+' tregon shtim ose bashkim. 'Bleu edhe' tregon mbledhje."
   },
   {
     id: 2,
-    type: 'text',
-    question: "Gjeni ndryshimin: 60 - 48 = ?",
-    hint: "Merrni një dhjetëshe hua nga 6-ta.",
-    options: ["12", "22", "28", "18"],
-    correctAnswer: "12",
-    explanation: "10 - 8 = 2. 5 - 4 = 1. Mbetja: 12."
+    type: 'word',
+    question: "Cila problemë i përshtatet ekuacionit: 50 - 20 = ?",
+    hint: "Kërko një histori ku diçka hiqet, humbet ose zvogëlohet.",
+    options: [
+      "Ana ka 50 euro. Ajo bleu një libër 20 euro. Sa i mbetën?",
+      "Ana ka 50 euro dhe mori 20 euro dhuratë. Sa ka gjithsej?",
+      "Ana ka 50 euro dhe do t'i ndajë me 20 shoqe.",
+      "Ana ka 50 euro, secila vlen 20 herë më shumë."
+    ],
+    correctAnswer: "Ana ka 50 euro. Ajo bleu një libër 20 euro. Sa i mbetën?",
+    explanation: "Shenja '-' tregon zbritje. 'Bleu' do të thotë që paratë pakësohen."
   },
   {
     id: 3,
     type: 'word',
-    question: "Sibora peshon 35 kg, ndërsa Buna peshon 29 kg. Sa kilogramë peshojnë të dyja vajzat së bashku?",
-    hint: "Fjala 'së bashku' tregon mbledhje.",
-    options: ["54 kg", "6 kg", "64 kg", "74 kg"],
-    correctAnswer: "64 kg",
-    explanation: "35 + 29 = 64 kg."
+    question: "Zgjidh ekuacionin për këtë problemë: 'Në një klasë janë 18 vajza dhe 12 djem. Sa nxënës janë gjithsej?'",
+    hint: "'Gjithsej' tregon mbledhje.",
+    options: ["18 - 12 =", "18 x 12 =", "18 + 12 =", "18 : 12 ="],
+    correctAnswer: "18 + 12 =",
+    explanation: "Për të gjetur totalin, mbledhim numrat."
   },
-  // --- ZBRITJE ME HUA ---
   {
     id: 4,
-    type: 'text',
-    question: "Llogaritni: 356 - 162 = ?",
-    hint: "Filloni nga njëshet. Pastaj te dhjetëshet, merrni hua.",
-    options: ["194", "214", "294", "114"],
-    correctAnswer: "194",
-    explanation: "6 - 2 = 4; 15 - 6 = 9; 2 - 1 = 1."
+    type: 'word',
+    question: "Cila shprehje tregon: '35 më pak se 100'?",
+    hint: "'Më pak' tregon zbritje nga numri i madh.",
+    options: ["35 - 100", "100 - 35", "100 + 35", "100 : 35"],
+    correctAnswer: "100 - 35",
+    explanation: "Kur themi 'më pak se', zbresim nga numri bazë (100)."
   },
+
+  // --- 2. KATRORËT MAGJIKË (ME SHUMË MUNGESA) ---
   {
     id: 5,
-    type: 'text',
-    question: "Gjeni ndryshimin me zero të ndërmjetme: 500 - 135 = ?",
-    hint: "Merrni hua zinxhir nga qindëshet.",
-    options: ["365", "435", "375", "475"],
-    correctAnswer: "365",
-    explanation: "10 - 5 = 5; 9 - 3 = 6; 4 - 1 = 3."
+    type: 'svg',
+    question: "Katror Magjik (Shuma 15): Cilat numra mungojnë te 'A' dhe 'B'?",
+    hint: "Rreshti i parë: 4 + ? + 2 = 15. Rreshti i dytë: 3 + 5 + ? = 15.",
+    svg: (
+      <svg viewBox="0 0 150 150" className="w-48 h-48 mx-auto">
+        <rect x="0" y="0" width="150" height="150" fill="white" stroke="black" strokeWidth="2" />
+        <line x1="50" y1="0" x2="50" y2="150" stroke="black" />
+        <line x1="100" y1="0" x2="100" y2="150" stroke="black" />
+        <line x1="0" y1="50" x2="150" y2="50" stroke="black" />
+        <line x1="0" y1="100" x2="150" y2="100" stroke="black" />
+        
+        {/* Row 1 */}
+        <text x="25" y="35" textAnchor="middle" fontSize="20">4</text>
+        <text x="75" y="35" textAnchor="middle" fontSize="20" fill="red" fontWeight="bold">A</text>
+        <text x="125" y="35" textAnchor="middle" fontSize="20">2</text>
+        {/* Row 2 */}
+        <text x="25" y="85" textAnchor="middle" fontSize="20">3</text>
+        <text x="75" y="85" textAnchor="middle" fontSize="20">5</text>
+        <text x="125" y="85" textAnchor="middle" fontSize="20" fill="blue" fontWeight="bold">B</text>
+        {/* Row 3 */}
+        <text x="25" y="135" textAnchor="middle" fontSize="20">8</text>
+        <text x="75" y="135" textAnchor="middle" fontSize="20">1</text>
+        <text x="125" y="135" textAnchor="middle" fontSize="20">6</text>
+      </svg>
+    ),
+    options: ["A=9, B=7", "A=8, B=6", "A=7, B=9", "A=5, B=5"],
+    correctAnswer: "A=9, B=7",
+    explanation: "Rreshti 1: 4+2=6, duhen 9 (15-6=9). Rreshti 2: 3+5=8, duhen 7 (15-8=7)."
   },
-  // --- TREKËNDËSHAT E NUMRAVE (NUMBER PYRAMIDS) ---
   {
     id: 6,
     type: 'svg',
-    question: "Gjeni numrin që mungon në majë të trekëndëshit. Numri sipër është shuma e dy numrave poshtë.",
-    hint: "Mblidhni dy numrat e poshtëm: 76 + 24.",
+    question: "Katror Magjik (Shuma 12): Cilat numra mungojnë te 'X' dhe 'Y'?",
+    hint: "Kujdes! Rreshti i parë: X + Y + 2 = 12. Kolona e fundit: 2 + 9 + ? = 12. Gjej numrat me radhë.",
+    svg: (
+      <svg viewBox="0 0 150 150" className="w-48 h-48 mx-auto">
+        <rect x="0" y="0" width="150" height="150" fill="white" stroke="black" strokeWidth="2" />
+        <line x1="50" y1="0" x2="50" y2="150" stroke="black" />
+        <line x1="100" y1="0" x2="100" y2="150" stroke="black" />
+        <line x1="0" y1="50" x2="150" y2="50" stroke="black" />
+        <line x1="0" y1="100" x2="150" y2="100" stroke="black" />
+        
+        {/* Row 1 */}
+        <text x="25" y="35" textAnchor="middle" fontSize="20" fill="red" fontWeight="bold">X</text>
+        <text x="75" y="35" textAnchor="middle" fontSize="20" fill="blue" fontWeight="bold">Y</text>
+        <text x="125" y="35" textAnchor="middle" fontSize="20">2</text>
+        {/* Row 2 */}
+        <text x="25" y="85" textAnchor="middle" fontSize="20">5</text>
+        <text x="75" y="85" textAnchor="middle" fontSize="20">4</text>
+        <text x="125" y="85" textAnchor="middle" fontSize="20">9</text>
+        {/* Row 3 */}
+        <text x="25" y="135" textAnchor="middle" fontSize="20">?</text>
+        <text x="75" y="135" textAnchor="middle" fontSize="20">?</text>
+        <text x="125" y="135" textAnchor="middle" fontSize="20">1</text>
+      </svg>
+    ),
+    options: ["X=7, Y=3", "X=6, Y=4", "X=5, Y=5", "X=8, Y=2"],
+    correctAnswer: "X=7, Y=3",
+    explanation: "Kolona e fundit: 2+9+1=12. Rreshti i mesit: 5+?+9. Në fakt: 7+3+2=12. X=7, Y=3."
+  },
+
+  // --- 3. MBLEDHJE E ZBRITJE ME KALIM TË RENDIT ---
+  {
+    id: 7,
+    type: 'text',
+    question: "Gjeni shumën: 468 + 285 = ?",
+    hint: "Kujdes, keni dy herë kalim të rendit (te njëshet dhe te dhjetëshet).",
+    options: ["753", "643", "743", "653"],
+    correctAnswer: "753",
+    explanation: "8+5=13 (shkruaj 3, mbaj 1); 6+8+1=15 (shkruaj 5, mbaj 1); 4+2+1=7. Totali 753."
+  },
+  {
+    id: 8,
+    type: 'text',
+    question: "Kryeni zbritjen me hua: 800 - 435 = ?",
+    hint: "Duhet të merrni hua nga qindëshet deri te njëshet (zinxhir).",
+    options: ["465", "365", "475", "375"],
+    correctAnswer: "365",
+    explanation: "10-5=5; 9-3=6; 7-4=3. Rezultati: 365."
+  },
+  {
+    id: 9,
+    type: 'text',
+    question: "Gjeni numrin që mungon: 1000 = 800 + ___ + 50 + 3",
+    hint: "Duhet të bëhet 1000. Kemi 800 + 50 + 3 = 853. Sa mungojnë deri në 1000?",
+    options: ["200", "100", "147", "153"],
+    correctAnswer: "147",
+    explanation: "1000 - 853 = 147."
+  },
+  {
+    id: 10,
+    type: 'text',
+    question: "Gjeni ndryshimin: 900 - 27 = ?",
+    hint: "Merrni hua te 9-ta dhe kujdes me dhjetëshet.",
+    options: ["873", "883", "973", "827"],
+    correctAnswer: "873",
+    explanation: "10-7=3; 9-2=7; mbetet 8. Rezultati: 873."
+  },
+
+  // --- 4. TREKËNDËSHAT E NUMRAVE ---
+  {
+    id: 11,
+    type: 'svg',
+    question: "Gjeni numrin në majë. (Numri sipër është shuma e dy numrave poshtë)",
+    hint: "76 + 24 = ?",
     svg: (
       <svg viewBox="0 0 200 120" className="w-48 h-32 mx-auto">
         <polygon points="100,10 40,110 160,110" fill="none" stroke="#2563eb" strokeWidth="3" />
@@ -64,15 +167,15 @@ const QUESTIONS = [
         <text x="130" y="100" textAnchor="middle" fontSize="20" fill="black">24</text>
       </svg>
     ),
-    options: ["90", "100", "110", "52"],
+    options: ["100", "90", "110", "120"],
     correctAnswer: "100",
     explanation: "76 + 24 = 100."
   },
   {
-    id: 7,
+    id: 12,
     type: 'svg',
-    question: "Cili numër mungon në bazën e trekëndëshit?",
-    hint: "Numri sipër (50) minus numrin poshtë (18) jep numrin tjetër.",
+    question: "Cili numër mungon në bazë? (Numri sipër = shuma e poshtëm)",
+    hint: "50 - 18 = ?",
     svg: (
       <svg viewBox="0 0 200 120" className="w-48 h-32 mx-auto">
         <polygon points="100,10 40,110 160,110" fill="none" stroke="#dc2626" strokeWidth="3" />
@@ -81,419 +184,256 @@ const QUESTIONS = [
         <text x="130" y="100" textAnchor="middle" fontSize="24" fill="#dc2626" fontWeight="bold">?</text>
       </svg>
     ),
-    options: ["68", "42", "32", "22"],
+    options: ["32", "42", "22", "68"],
     correctAnswer: "32",
     explanation: "50 - 18 = 32."
   },
-  // --- KATRORËT MAGJIKË ---
+
+  // --- 5. PROBLEMA ME FJALË ---
   {
-    id: 8,
-    type: 'svg',
-    question: "Ky është një Katror Magjik. Shuma e rreshtit të parë është 15 (4 + 9 + 2). Cili numër mungon në rreshtin e dytë?",
-    hint: "Shuma duhet të jetë 15. Keni 3 + 5 = 8. Sa duhet për 15?",
-    svg: (
-      <svg viewBox="0 0 150 150" className="w-40 h-40 mx-auto">
-        <rect x="0" y="0" width="150" height="150" fill="white" stroke="black" strokeWidth="2" />
-        <line x1="50" y1="0" x2="50" y2="150" stroke="black" />
-        <line x1="100" y1="0" x2="100" y2="150" stroke="black" />
-        <line x1="0" y1="50" x2="150" y2="50" stroke="black" />
-        <line x1="0" y1="100" x2="150" y2="100" stroke="black" />
-        
-        {/* Row 1 */}
-        <text x="25" y="35" textAnchor="middle">4</text>
-        <text x="75" y="35" textAnchor="middle">9</text>
-        <text x="125" y="35" textAnchor="middle">2</text>
-        {/* Row 2 */}
-        <text x="25" y="85" textAnchor="middle">3</text>
-        <text x="75" y="85" textAnchor="middle">5</text>
-        <text x="125" y="85" textAnchor="middle" fill="red" fontWeight="bold">?</text>
-        {/* Row 3 */}
-        <text x="25" y="135" textAnchor="middle">8</text>
-        <text x="75" y="135" textAnchor="middle">1</text>
-        <text x="125" y="135" textAnchor="middle">6</text>
-      </svg>
-    ),
-    options: ["6", "7", "8", "5"],
-    correctAnswer: "7",
-    explanation: "3 + 5 = 8. Që të bëhen 15, duhet 15 - 8 = 7."
+    id: 13,
+    type: 'word',
+    question: "Në një autobus janë 45 pasagjerë. Në stacion zbritën 12 dhe hipën 8. Sa pasagjerë janë tani?",
+    hint: "Bëj veprimet me radhë: 45 - 12 + 8.",
+    options: ["33", "41", "53", "31"],
+    correctAnswer: "41",
+    explanation: "45 - 12 = 33. Pastaj 33 + 8 = 41."
   },
-  // --- SHUMËZIMI DHE MBLEDHJA E PËRSËRITUR ---
   {
-    id: 9,
+    id: 14,
+    type: 'word',
+    question: "Arta lexoi 24 faqe ditën e parë, 30 faqe ditën e dytë. Libri ka 90 faqe. Sa faqe i kanë mbetur?",
+    hint: "Gjej sa lexoi gjithsej, pastaj zbrit nga totali.",
+    options: ["54", "46", "36", "66"],
+    correctAnswer: "36",
+    explanation: "Lexoi 24 + 30 = 54. Mbetën 90 - 54 = 36 faqe."
+  },
+  {
+    id: 15,
+    type: 'word',
+    question: "Një shitës ka 80 tullumbace. 30 janë të kuqe, 20 janë të verdha, të tjerat janë blu. Sa tullumbace blu janë?",
+    hint: "80 - (30 + 20).",
+    options: ["30", "40", "50", "20"],
+    correctAnswer: "30",
+    explanation: "30 + 20 = 50. 80 - 50 = 30 blu."
+  },
+
+  // --- 6. SHUMËZIMI DHE PJESËTIMI ---
+  {
+    id: 16,
     type: 'text',
-    question: "Si mund ta shkruajmë ndryshe shumën: 4 + 4 + 4 + 4 + 4 = ?",
+    question: "Si shkruhet shuma 4 + 4 + 4 + 4 + 4 si shumëzim?",
     hint: "Numëro sa herë përsëritet numri 4.",
-    options: ["4 x 4", "5 x 4", "4 + 5", "24"],
+    options: ["4 x 5", "5 x 4", "4 x 4", "20"],
     correctAnswer: "5 x 4",
     explanation: "Numri 4 përsëritet 5 herë, pra 5 x 4."
   },
   {
-    id: 10,
-    type: 'text',
-    question: "Cili numër vjen pas? 350, 400, 450, ...",
-    hint: "Numrat po rriten me nga 50.",
-    options: ["460", "500", "550", "600"],
-    correctAnswer: "500",
-    explanation: "450 + 50 = 500."
-  },
-  {
-    id: 11,
-    type: 'text',
-    question: "Cila shifër tregon qindëshet te numri 742?",
-    hint: "Shifra e parë nga e majta.",
-    options: ["2", "4", "7", "Asnjëra"],
-    correctAnswer: "7",
-    explanation: "7 është te qindëshet, 4 te dhjetëshet, 2 te njëshet."
-  },
-  // --- PROBLEMA ME FJALË DHE LEKË ---
-  {
-    id: 12,
-    type: 'word',
-    question: "Një biçikletë kushton 125 euro. Një trotinet kushton 85 euro. Sa më shumë kushton biçikleta?",
-    hint: "'Sa më shumë' kërkon veprimin e zbritjes.",
-    options: ["210 euro", "40 euro", "30 euro", "140 euro"],
-    correctAnswer: "40 euro",
-    explanation: "125 - 85 = 40 euro."
-  },
-  {
-    id: 13,
-    type: 'word',
-    question: "Për një fletore dhe një laps u shpenzuan 95 centë. Sa kushtoi lapsi, nëse fletorja kushtoi 67 centë?",
-    hint: "Totali minus çmimin e fletores.",
-    options: ["38 centë", "28 centë", "32 centë", "162 centë"],
-    correctAnswer: "28 centë",
-    explanation: "95 - 67 = 28 centë."
-  },
-  // --- PYETJE TË REJA SHTESË ---
-  {
-    id: 14,
-    type: 'text',
-    question: "Kryeni zbritjen: 900 - 27 = ?",
-    hint: "Merrni hua te 9-ta.",
-    options: ["873", "883", "973", "827"],
-    correctAnswer: "873",
-    explanation: "10 - 7 = 3; 9 - 2 = 7; mbetet 8. Rezultati: 873."
-  },
-  {
-    id: 15,
-    type: 'text',
-    question: "Gjeni shumën: 468 + 285 = ?",
-    hint: "Kujdes, keni dy herë kalim të rendit.",
-    options: ["753", "643", "743", "653"],
-    correctAnswer: "753",
-    explanation: "8 + 5 = 13; 6 + 8 + 1 = 15; 4 + 2 + 1 = 7. Totali 753."
-  },
-  {
-    id: 16,
-    type: 'text',
-    question: "Cila veti e mbledhjes është kjo: 35 + 47 = 47 + 35?",
-    hint: "Numrat kanë ndërruar vendet.",
-    options: ["Vetia e shoqërimit", "Vetia e ndërrimit (komutative)", "Vetia e shpërndarjes", "Vetia e zeros"],
-    correctAnswer: "Vetia e ndërrimit (komutative)",
-    explanation: "Kur ndërrojmë vendet e mbledhorëve, shuma nuk ndryshon."
-  },
-  {
     id: 17,
     type: 'text',
-    question: "Gjeni numrin që mungon: 1000 = 800 + ___ + 50 + 3",
-    hint: "Duhet të bëhet 1000. Kemi 800 + 50 + 3 = 853.",
-    options: ["200", "100", "147", "153"],
-    correctAnswer: "147",
-    explanation: "1000 - 853 = 147."
+    question: "Sa bëjnë 8 x 6?",
+    hint: "Tabela e shumëzimit të 8-ës.",
+    options: ["48", "56", "42", "54"],
+    correctAnswer: "48",
+    explanation: "8 x 6 = 48."
   },
   {
     id: 18,
     type: 'text',
-    question: "Plotëso vargun: 140, 141, 142, ..., ...",
-    hint: "Rritje me nga 1.",
-    options: ["143, 145", "143, 144", "150, 160", "139, 138"],
-    correctAnswer: "143, 144",
-    explanation: "Pas 142 vjen 143, pastaj 144."
+    question: "Cili numër mungon: ___ : 4 = 9",
+    hint: "Përdor shumëzimin e kundërt: 9 x 4.",
+    options: ["36", "32", "28", "45"],
+    correctAnswer: "36",
+    explanation: "36 : 4 = 9 sepse 9 x 4 = 36."
   },
   {
     id: 19,
     type: 'text',
-    question: "Gjeni numrin që mungon: 47 + ___ = 100",
-    hint: "Zbritni 47 nga 100.",
-    options: ["63", "53", "43", "57"],
-    correctAnswer: "53",
-    explanation: "100 - 47 = 53."
+    question: "Llogarit: 324 x 2 = ?",
+    hint: "Shumëzo secilën shifër me 2.",
+    options: ["648", "628", "548", "644"],
+    correctAnswer: "648",
+    explanation: "2x4=8, 2x2=4, 2x3=6. Rezultati 648."
   },
   {
     id: 20,
     type: 'text',
-    question: "Cila shenjë duhet: 356 ? 287",
-    hint: "Krahasoni qindëshet.",
-    options: ["<", ">", "=", "+"],
-    correctAnswer: ">",
-    explanation: "300 është më e madhe se 200."
+    question: "Sa bëjnë 100 x 5?",
+    hint: "Shto dy zero numrit 5.",
+    options: ["50", "500", "5000", "105"],
+    correctAnswer: "500",
+    explanation: "5 x 100 = 500."
   },
+
+  // --- 7. MODELIM DHE LOGJIKË ---
   {
     id: 21,
     type: 'text',
-    question: "Kryeni zbritjen: 800 - 435 = ?",
-    hint: "Marrim hua nga qindëshet deri te njëshet.",
-    options: ["465", "365", "475", "375"],
-    correctAnswer: "365",
-    explanation: "10 - 5 = 5; 9 - 3 = 6; 7 - 4 = 3."
+    question: "Cili numër vjen pas? 12, 16, 20, 24, ...",
+    hint: "Numrat rriten me nga 4.",
+    options: ["26", "28", "30", "32"],
+    correctAnswer: "28",
+    explanation: "24 + 4 = 28."
   },
   {
     id: 22,
     type: 'text',
-    question: "Cili veprim jep rezultatin më të madh?",
-    hint: "Llogarit me mend.",
-    options: ["300 + 400", "800 - 200", "500 + 300", "900 - 300"],
-    correctAnswer: "500 + 300",
-    explanation: "700, 600, 800, 600. Më e madhja është 800."
+    question: "Cili numër vjen pas? 350, 400, 450, ...",
+    hint: "Numrat rriten me nga 50.",
+    options: ["460", "500", "550", "600"],
+    correctAnswer: "500",
+    explanation: "450 + 50 = 500."
   },
+  
+  // --- 8. GJEOMETRI ---
   {
     id: 23,
     type: 'text',
-    question: "Si shkruhet me numra: Pesëqind e shtatë?",
-    hint: "Nuk ka dhjetëshe.",
-    options: ["57", "570", "507", "5007"],
-    correctAnswer: "507",
-    explanation: "5 qindëshe, 0 dhjetëshe, 7 njëshe."
+    question: "Sa është perimetri i një katrori me brinjë 5 cm?",
+    hint: "Perimetri = 4 x brinja (ose 5+5+5+5).",
+    options: ["20 cm", "25 cm", "15 cm", "10 cm"],
+    correctAnswer: "20 cm",
+    explanation: "4 x 5 cm = 20 cm."
   },
   {
     id: 24,
     type: 'text',
-    question: "Llogaritni me mend: 23 + 16 + 27 = ?",
-    hint: "Mblidhni 23 dhe 27 së pari.",
-    options: ["56", "66", "76", "60"],
-    correctAnswer: "66",
-    explanation: "23 + 27 = 50; 50 + 16 = 66."
+    question: "Sa brinjë ka një trekëndësh?",
+    hint: "Emri e tregon (tre).",
+    options: ["3", "4", "5", "2"],
+    correctAnswer: "3",
+    explanation: "Trekëndëshi ka 3 brinjë."
   },
+
+  // --- 9. PYETJE SHTESË TË PËRZIERA ---
   {
     id: 25,
     type: 'text',
-    question: "Çfarë quhet rezultati i veprimit të zbritjes?",
-    hint: "Jo shuma.",
-    options: ["Shumë", "Prodhim", "Ndryshim", "Herës"],
-    correctAnswer: "Ndryshim",
-    explanation: "Rezultati i zbritjes quhet ndryshim."
+    question: "Rrumbullakos numrin 47 në dhjetëshen më të afërt.",
+    options: ["40", "50", "45", "60"],
+    correctAnswer: "50",
+    explanation: "7 > 5, prandaj shkojmë te 50."
   },
   {
     id: 26,
     type: 'text',
-    question: "Në një tren ka 254 pasagjerë. Në një tjetër ka 478 pasagjerë. Sa pasagjerë janë gjithsej?",
-    hint: "Mblidhni dy numrat.",
-    options: ["622", "732", "722", "224"],
-    correctAnswer: "732",
-    explanation: "254 + 478 = 732."
+    question: "Cili numër është çift?",
+    options: ["33", "45", "88", "91"],
+    correctAnswer: "88",
+    explanation: "Numrat çift mbarojnë me 0, 2, 4, 6, 8."
   },
   {
     id: 27,
     type: 'text',
-    question: "Gjeni shumën: 20 + 40 + 8 = ?",
-    hint: "Mblidh dhjetëshet pastaj shtoji 8.",
-    options: ["248", "68", "14", "48"],
-    correctAnswer: "68",
-    explanation: "60 + 8 = 68."
+    question: "9 x 9 = ?",
+    options: ["81", "72", "99", "18"],
+    correctAnswer: "81",
+    explanation: "9 x 9 = 81."
   },
   {
     id: 28,
     type: 'text',
-    question: "Nëse 8 + 6 = 14, atëherë 14 - 6 = ?",
-    hint: "Veprimi i kundërt.",
-    options: ["6", "8", "20", "14"],
-    correctAnswer: "8",
-    explanation: "Zbritja është e kundërta e mbledhjes."
+    question: "45 : 5 = ?",
+    options: ["8", "9", "7", "6"],
+    correctAnswer: "9",
+    explanation: "9 x 5 = 45."
   },
   {
     id: 29,
     type: 'text',
-    question: "Gjeni ndryshimin: 1000 - 1 = ?",
-    hint: "Numri para 1000.",
-    options: ["900", "999", "1001", "990"],
+    question: "Gjej ndryshimin: 1000 - 1 = ?",
+    options: ["999", "900", "1001", "990"],
     correctAnswer: "999",
     explanation: "Një më pak se 1000 është 999."
   },
   {
     id: 30,
-    type: 'svg',
-    question: "Cili numër duhet të jetë në vend të pikëpyetjes në Katrorin Magjik (Shuma 15)?",
-    hint: "Shuma e rreshtit të fundit: 8 + 1 + 6 = 15. Kolona e parë: 4 + 3 + 8 = 15. Gjej numrin qendror.",
-    svg: (
-      <svg viewBox="0 0 150 150" className="w-40 h-40 mx-auto">
-        <rect x="0" y="0" width="150" height="150" fill="white" stroke="black" strokeWidth="2" />
-        <line x1="50" y1="0" x2="50" y2="150" stroke="black" />
-        <line x1="100" y1="0" x2="100" y2="150" stroke="black" />
-        <line x1="0" y1="50" x2="150" y2="50" stroke="black" />
-        <line x1="0" y1="100" x2="150" y2="100" stroke="black" />
-        
-        <text x="25" y="35" textAnchor="middle">4</text>
-        <text x="75" y="35" textAnchor="middle">9</text>
-        <text x="125" y="35" textAnchor="middle">2</text>
-        
-        <text x="25" y="85" textAnchor="middle">3</text>
-        <text x="75" y="85" textAnchor="middle" fill="blue" fontWeight="bold">?</text>
-        <text x="125" y="85" textAnchor="middle">7</text>
-        
-        <text x="25" y="135" textAnchor="middle">8</text>
-        <text x="75" y="135" textAnchor="middle">1</text>
-        <text x="125" y="135" textAnchor="middle">6</text>
-      </svg>
-    ),
-    options: ["4", "5", "6", "10"],
-    correctAnswer: "5",
-    explanation: "Kolona e mesit: 9 + 5 + 1 = 15. Numri është 5."
+    type: 'text',
+    question: "Sa minuta ka 1 orë e gjysmë?",
+    hint: "1 orë = 60 min, gjysmë ore = 30 min.",
+    options: ["60", "90", "100", "120"],
+    correctAnswer: "90",
+    explanation: "60 + 30 = 90 minuta."
   },
   {
     id: 31,
     type: 'text',
-    question: "Kryej veprimin: 200 + 300 - 100 = ?",
-    hint: "Fillimisht mblidh, pastaj zbrit.",
-    options: ["400", "500", "600", "300"],
-    correctAnswer: "400",
-    explanation: "200 + 300 = 500; 500 - 100 = 400."
+    question: "Cila shenjë duhet: 356 ? 287",
+    options: [">", "<", "=", "+"],
+    correctAnswer: ">",
+    explanation: "356 është më i madh se 287."
   },
   {
     id: 32,
-    type: 'word',
-    question: "Anisa ka 25 lule të kuqe dhe 18 lule të verdha. Sa lule ka gjithsej Anisa?",
-    hint: "Mblidh 25 dhe 18.",
-    options: ["33", "43", "53", "42"],
-    correctAnswer: "43",
-    explanation: "25 + 18 = 43."
+    type: 'text',
+    question: "Sa bëjnë 7 x 8?",
+    options: ["56", "54", "49", "64"],
+    correctAnswer: "56",
+    explanation: "7 x 8 = 56."
   },
   {
     id: 33,
     type: 'word',
-    question: "Libri ka 120 faqe. Goni lexoi 20 faqe dje dhe 30 faqe sot. Sa faqe i kanë mbetur?",
-    hint: "Gjej sa lexoi gjithsej (20 + 30), pastaj zbriti nga totali.",
-    options: ["50", "60", "70", "80"],
-    correctAnswer: "70",
-    explanation: "Lexoi 20 + 30 = 50. Mbetën 120 - 50 = 70."
+    question: "Një libër kushton 5 euro. Sa kushtojnë 6 libra?",
+    options: ["30 euro", "25 euro", "35 euro", "11 euro"],
+    correctAnswer: "30 euro",
+    explanation: "6 x 5 = 30 euro."
   },
   {
     id: 34,
     type: 'text',
-    question: "Rrumbullakos numrin 47 në dhjetëshen më të afërt.",
-    hint: "A është më afër 40 apo 50?",
-    options: ["40", "50", "45", "60"],
-    correctAnswer: "50",
-    explanation: "7 është më e madhe se 5, kështu që shkojmë te 50."
+    question: "Gjej shumën: 125 + 125 = ?",
+    options: ["250", "200", "300", "225"],
+    correctAnswer: "250",
+    explanation: "100+100=200; 25+25=50. Totali 250."
   },
   {
     id: 35,
     type: 'text',
-    question: "Cili është numri tek midis këtyre numrave?",
-    hint: "Numrat tek nuk ndahen me 2 (mbarojnë me 1, 3, 5, 7, 9).",
-    options: ["22", "34", "45", "88"],
-    correctAnswer: "45",
-    explanation: "45 mbaron me 5, pra është tek."
+    question: "Cili numër vjen para 500?",
+    options: ["499", "490", "501", "400"],
+    correctAnswer: "499",
+    explanation: "500 - 1 = 499."
   },
   {
     id: 36,
     type: 'text',
-    question: "Shkruaj numrin: 'Shtatëqind e tridhjetë e dy'",
-    hint: "7 qindëshe, 3 dhjetëshe, 2 njëshe.",
-    options: ["723", "732", "372", "7032"],
-    correctAnswer: "732",
-    explanation: "732."
+    question: "Sa bëjnë 30 : 3?",
+    options: ["10", "3", "33", "90"],
+    correctAnswer: "10",
+    explanation: "3 x 10 = 30."
   },
   {
     id: 37,
     type: 'text',
-    question: "Sa bëjnë 8 + 8 + 8?",
-    hint: "Mbledhje e përsëritur.",
-    options: ["16", "24", "32", "18"],
-    correctAnswer: "24",
-    explanation: "8 + 8 = 16, 16 + 8 = 24."
+    question: "1 kg = ? g",
+    options: ["100 g", "1000 g", "10 g", "500 g"],
+    correctAnswer: "1000 g",
+    explanation: "1 kilogram ka 1000 gram."
   },
   {
     id: 38,
-    type: 'svg',
-    question: "Sa trekëndësha shihni në këtë figurë?",
-    hint: "Numëroni trekëndëshat e vegjël dhe të mëdhenj.",
-    svg: (
-      <svg viewBox="0 0 200 150" className="w-48 h-32 mx-auto">
-        <polygon points="100,10 40,130 160,130" fill="none" stroke="black" strokeWidth="2" />
-        <line x1="100" y1="10" x2="100" y2="130" stroke="black" strokeWidth="2" />
-      </svg>
-    ),
-    options: ["2", "3", "4", "1"],
-    correctAnswer: "3",
-    explanation: "Janë 2 trekëndësha të vegjël dhe 1 i madh që i përmban të dy. Gjithsej 3."
+    type: 'text',
+    question: "Cili numër është 100 më shumë se 245?",
+    options: ["345", "255", "1245", "246"],
+    correctAnswer: "345",
+    explanation: "245 + 100 = 345."
   },
   {
     id: 39,
     type: 'text',
-    question: "Gjeni numrin që është 10 më pak se 500.",
-    hint: "Numërimi mbrapsht me 10.",
-    options: ["400", "490", "510", "499"],
-    correctAnswer: "490",
-    explanation: "500 - 10 = 490."
+    question: "Sa bëjnë 0 x 9?",
+    options: ["0", "9", "1", "90"],
+    correctAnswer: "0",
+    explanation: "Çdo numër i shumëzuar me 0 jep 0."
   },
   {
     id: 40,
     type: 'text',
-    question: "Cili numër është më i madh: 602 apo 620?",
-    hint: "Krahasoni dhjetëshet.",
-    options: ["602", "620", "Janë të barabartë", "Nuk mund ta dimë"],
-    correctAnswer: "620",
-    explanation: "620 ka 2 dhjetëshe, 602 ka 0 dhjetëshe."
-  },
-  {
-    id: 41,
-    type: 'text',
-    question: "Sa bëjnë 6 x 5?",
-    hint: "Numëro me nga 5 gjashtë herë.",
-    options: ["35", "25", "30", "40"],
-    correctAnswer: "30",
-    explanation: "5, 10, 15, 20, 25, 30."
-  },
-  {
-    id: 42,
-    type: 'word',
-    question: "Në një klasë janë 18 vajza dhe 14 djem. Sa nxënës janë gjithsej?",
-    hint: "Mblidh 18 + 14.",
-    options: ["22", "32", "42", "30"],
-    correctAnswer: "32",
-    explanation: "18 + 14 = 32."
-  },
-  {
-    id: 43,
-    type: 'text',
-    question: "Kryej veprimin: 150 + 150 = ?",
-    hint: "Dy herë 150.",
-    options: ["200", "300", "250", "350"],
-    correctAnswer: "300",
-    explanation: "100 + 100 = 200; 50 + 50 = 100; 200 + 100 = 300."
-  },
-  {
-    id: 44,
-    type: 'svg',
-    question: "Cila figurë është katror?",
-    hint: "Katrori ka të gjitha brinjët e barabarta.",
-    svg: (
-      <svg viewBox="0 0 300 100" className="w-full h-24 mx-auto">
-        {/* Shape A: Rectangle */}
-        <rect x="10" y="20" width="60" height="40" fill="#bfdbfe" stroke="black" strokeWidth="2" />
-        <text x="40" y="80" textAnchor="middle">A</text>
-        
-        {/* Shape B: Square */}
-        <rect x="100" y="10" width="60" height="60" fill="#bbf7d0" stroke="black" strokeWidth="2" />
-        <text x="130" y="90" textAnchor="middle">B</text>
-        
-        {/* Shape C: Circle */}
-        <circle cx="230" cy="40" r="30" fill="#fecaca" stroke="black" strokeWidth="2" />
-        <text x="230" y="90" textAnchor="middle">C</text>
-      </svg>
-    ),
-    options: ["A", "B", "C", "Asnjëra"],
-    correctAnswer: "B",
-    explanation: "Figura B ka brinjë të barabarta, është katror."
-  },
-  {
-    id: 45,
-    type: 'text',
-    question: "Sa minuta ka gjysmë ore?",
-    hint: "Një orë e plotë ka 60 minuta.",
-    options: ["20", "30", "40", "50"],
-    correctAnswer: "30",
-    explanation: "Gjysma e 60 është 30."
+    question: "Cila figurë nuk ka asnjë kënd?",
+    options: ["Rrethi", "Trekëndëshi", "Katrori", "Drejtkëndëshi"],
+    correctAnswer: "Rrethi",
+    explanation: "Rrethi është vijë e lakuar e mbyllur, pa kënde."
   }
 ];
 
@@ -525,13 +465,9 @@ const DrawingCanvas = ({ questionId }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     
-    // We don't rely solely on this because event handlers might close over old state
-    // But we keep it for general setup
     const context = canvas.getContext('2d');
     context.lineCap = 'round';
     context.lineJoin = 'round';
-    // We do NOT set color here to avoid race conditions. 
-    // We set it in startDrawing/draw.
     
     // Prevent scrolling when touching canvas
     const preventScroll = (e) => {
@@ -547,7 +483,7 @@ const DrawingCanvas = ({ questionId }) => {
       document.body.removeEventListener('touchstart', preventScroll);
       document.body.removeEventListener('touchmove', preventScroll);
     };
-  }, []); // Only run once on mount
+  }, []);
 
   // Handle resizing
   useEffect(() => {
@@ -695,12 +631,54 @@ const DrawingCanvas = ({ questionId }) => {
 
 // 2. Main App Component
 export default function MathQuizApp() {
+  const [studentName, setStudentName] = useState('');
+  const [isQuizStarted, setIsQuizStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [history, setHistory] = useState([]);
+
+  // --- WELCOME SCREEN LOGIC ---
+  if (!isQuizStarted) {
+    return (
+      <div className="min-h-screen bg-sky-100 flex items-center justify-center p-4 font-sans">
+        <div className="bg-white rounded-3xl shadow-xl p-8 max-w-md w-full text-center space-y-6">
+          <div className="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <User size={48} className="text-indigo-600" />
+          </div>
+          
+          <h1 className="text-3xl font-bold text-gray-800">Mirësevini në Kuizin e Matematikës!</h1>
+          <p className="text-gray-600">Përshëndetje! Si e ke emrin?</p>
+          
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Shkruaj emrin tënd këtu..."
+              value={studentName}
+              onChange={(e) => setStudentName(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border-2 border-indigo-100 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-center text-lg font-medium transition-all"
+            />
+            
+            <button
+              onClick={() => {
+                if (studentName.trim()) setIsQuizStarted(true);
+              }}
+              disabled={!studentName.trim()}
+              className={`w-full py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 ${
+                studentName.trim() 
+                  ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200' 
+                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              Fillo Kuizin <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const currentQ = QUESTIONS[currentQuestionIndex];
 
@@ -736,7 +714,6 @@ export default function MathQuizApp() {
   };
 
   const skipQuestion = () => {
-    // Record as skipped/incorrect
     const resultRecord = {
       questionId: currentQ.id,
       isCorrect: false,
@@ -745,13 +722,29 @@ export default function MathQuizApp() {
     
     setHistory([...history, resultRecord]);
 
-    // Move to next or finish
     if (currentQuestionIndex < QUESTIONS.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
       setIsAnswerChecked(false);
     } else {
       setShowResult(true);
+    }
+  };
+
+  const prevQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      // Undo logic: Remove last history record and decrement score if it was correct
+      const newHistory = [...history];
+      const lastAction = newHistory.pop();
+      
+      if (lastAction && lastAction.isCorrect) {
+        setScore(score - 1);
+      }
+
+      setHistory(newHistory);
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setSelectedAnswer(null);
+      setIsAnswerChecked(false);
     }
   };
 
@@ -766,16 +759,16 @@ export default function MathQuizApp() {
 
   if (showResult) {
     return (
-      <div className="min-h-screen bg-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-sky-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-3xl shadow-xl p-8 max-w-md w-full text-center">
           <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Trophy size={48} className="text-yellow-600" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Të lumtë Noar!</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Të lumtë {studentName}!</h2>
           <p className="text-gray-600 mb-6">Ti përfundove testin e matematikës.</p>
           
           <div className="bg-blue-50 rounded-xl p-6 mb-8">
-            <p className="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-1">Rezultati yt</p>
+            <p className="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-1">Rezultati i {studentName}</p>
             <p className="text-5xl font-bold text-blue-600">{score} / {QUESTIONS.length}</p>
           </div>
 
@@ -786,6 +779,17 @@ export default function MathQuizApp() {
             >
               <RefreshCw size={20} />
               Provo Përsëri
+            </button>
+            
+            <button
+              onClick={() => {
+                setStudentName('');
+                setIsQuizStarted(false);
+                restartQuiz();
+              }}
+              className="w-full py-3 text-indigo-600 font-medium hover:bg-indigo-50 rounded-xl transition-colors"
+            >
+              Ndrysho emrin
             </button>
           </div>
         </div>
@@ -801,7 +805,7 @@ export default function MathQuizApp() {
             <Calculator className="text-indigo-600" size={24} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-800">Matematika me Noarin</h1>
+            <h1 className="text-xl font-bold text-gray-800">Matematika me {studentName}</h1>
             <p className="text-xs text-gray-500">Përgatitje për Test - Klasa 3</p>
           </div>
         </div>
@@ -824,7 +828,7 @@ export default function MathQuizApp() {
             <div className="mb-6">
               <div className="flex justify-between items-start mb-4">
                 <span className="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                  {currentQ.type === 'svg' ? 'Gjeometri / Logjikë' : 'Llogaritje'}
+                  {currentQ.type === 'svg' ? 'Gjeometri / Logjikë' : (currentQ.type === 'word' ? 'Problemë' : 'Llogaritje')}
                 </span>
               </div>
               
@@ -870,18 +874,29 @@ export default function MathQuizApp() {
               </div>
             </div>
 
-            {/* Feedback Section */}
+            {/* Feedback & Navigation Section */}
             <div>
               {isAnswerChecked && (
                 <div className={`mb-4 p-4 rounded-xl ${selectedAnswer === currentQ.correctAnswer ? 'bg-green-100 text-green-800' : 'bg-amber-50 text-amber-800'}`}>
                   <p className="font-bold flex items-center gap-2 mb-1">
-                    {selectedAnswer === currentQ.correctAnswer ? 'Saktë! Bravo!' : 'Jo fiks...'}
+                    {selectedAnswer === currentQ.correctAnswer ? `Saktë ${studentName}! Bravo!` : `Jo fiks ${studentName}...`}
                   </p>
                   <p className="text-sm opacity-90">{currentQ.explanation}</p>
                 </div>
               )}
 
               <div className="flex gap-3">
+                {/* Back Button */}
+                <button
+                  onClick={prevQuestion}
+                  disabled={currentQuestionIndex === 0}
+                  className={`px-4 py-3 rounded-xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all border-2 border-gray-200 flex items-center gap-2 ${currentQuestionIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  title="Kthehu (Fshin përgjigjen)"
+                >
+                  <Undo2 size={20} />
+                  <span className="hidden sm:inline">Kthehu</span>
+                </button>
+
                 {!isAnswerChecked ? (
                   <>
                     <button
@@ -893,7 +908,7 @@ export default function MathQuizApp() {
                           : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       }`}
                     >
-                      Kontrollo Përgjigjen
+                      Kontrollo
                     </button>
                     <button
                       onClick={skipQuestion}
@@ -907,7 +922,7 @@ export default function MathQuizApp() {
                 ) : (
                   <button
                     onClick={nextQuestion}
-                    className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-200 flex items-center justify-center gap-2"
+                    className="flex-grow py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-200 flex items-center justify-center gap-2"
                   >
                     Vazhdo <ChevronRight size={20} />
                   </button>
